@@ -1,6 +1,8 @@
 let operation = "add";
-let result = 0;
-const display = document.querySelector(".display");
+let result=0;
+const display = document.querySelector('.display');
+const equalButton = document.getElementById('equal');
+//const decimalButton = document.getElementById('decimal');
 
 const sum = (a, b) => a + b;
 const sub = (a, b) => a - b;
@@ -9,6 +11,47 @@ const division = (a, b) => {
   if(b === 0) alert("You can't divide by 0");
   return a / b;
 };
+
+const clearButton = document.getElementById('clear');
+clearButton.addEventListener('click', () => {
+  updateDisplay('');
+});
+
+function updateDisplay(number) {
+  let displayContent = document.querySelector('.display').textContent;
+  let updatedContent = Number(displayContent + number);
+  document.querySelector('.display').textContent = updatedContent;
+}
+
+function clearDisplay(){
+  document.querySelector('.display').textContent = 0;
+}
+
+const numberButtons = document.querySelectorAll('.btn--number');
+numberButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    const numberPressed = button.textContent;
+    console.log(numberPressed);
+    updateDisplay(numberPressed);
+  });
+});
+
+const operatorButtons = document.querySelectorAll('.btn--operator');
+operatorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const operator = button.textContent.trim(); // Get the text content of the button
+        if (operator === '+') {
+            operation = '+';
+        } else if (operator === '-') {
+            operation = '-';
+        } else if (operator === '/') {
+            operation = '/';
+        } else if (operator === 'X') {
+            operation = '*';
+        }
+        console.log("Operation:", operation); // For debugging
+    });
+});
 
 const operate = (operator, a, b) => {
     if((a && b) && operator) {
@@ -23,8 +66,6 @@ const operate = (operator, a, b) => {
         }
     }
 }
-
-
 
 const calculate = () => {
   switch (operation) {
@@ -41,26 +82,6 @@ const calculate = () => {
   }
 };
 
-// lines 21-42 added by Lucy ; ERASE AFTER YOU TAKE OVER
-const clearButton = document.getElementById("clear");
-clearButton.addEventListener("click", () => {
-  updateDisplay("");
-});
 
-function updateDisplay(number) {
-  let displayContent = document.querySelector(".display").textContent;
-  let updatedContent = Number(displayContent + number);
-  document.querySelector(".display").textContent = updatedContent;
-}
 
-function clearDisplay() {
-  document.querySelector(".display").textContent = 0;
-}
 
-const numberButtons = document.querySelectorAll(".btn--number");
-numberButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const numberPressed = button.textContent;
-    updateDisplay(numberPressed);
-  });
-});
