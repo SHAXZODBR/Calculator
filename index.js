@@ -1,86 +1,146 @@
-let operationType = "add";
-let result = 0;
-let number1 = "";
-let number2 = "";
-const display = document.querySelector(".display");
-const equalButton = document.getElementById("equal");
-//const decimalButton = document.getElementById('decimal');
-
-const add = (a, b) => a + b;
-const substract = (a, b) => a - b;
-const multiply = (a, b) => a * b;
-const divide = (a, b) => {
-  if (b === 0) alert("You can't divide by 0");
-  return a / b;
+let calculator = {
+  currentInput: "",
+  firstNumber: "",
+  operator: "",
+  hasResult: false,
 };
 
-const allOperations = {
-  add: add,
-  substract: substract,
-  multiply: multiply,
-  divide: divide,
-};
+function addToDisplay(number) {
+  if (calculator.hasResult) {
+    clearCalculator();
+  }
+  if (number === "." && calculator.currentInput.includes(".")) {
+    return;
+  }
+  calculator.currentInput += number;
+  updateDisplay();
+}
 
-const clearButton = document.getElementById("clear");
-clearButton.addEventListener("click", () => {
-  updateDisplay("");
-});
+function updateDisplay() {
+  document.getElementById("display").innerText = calculator.currentInput;
+}
 
-function updateDisplay(number) {
-  let displayContent = document.querySelector(".display").textContent;
-  let updatedContent = Number(displayContent + number);
-  document.querySelector(".display").textContent = updatedContent;
+function operation(op) {
+  if (calculator.currentInput !== "") {
+    if (calculator.firstNumber === "") {
+      calculator.firstNumber = parseFloat(calculator.currentInput);
+      calculator.operator = op;
+      calculator.currentInput = "";
+      updateDisplay();
+    } else {
+      let secondNumber = parseFloat(calculator.currentInput);
+      let result = operateFunction(
+        calculator.operator,
+        calculator.firstNumber,
+        secondNumber
+      );
+      calculator.currentInput = result.toString();
+      calculator.firstNumber = calculator.currentInput;
+      calculator.operator = op;
+      updateDisplay();
+    }
+  }
+}
+
+function operate() {
+  if (
+    calculator.firstNumber !== "" &&
+    calculator.operator !== "" &&
+    calculator.currentInput !== ""
+  ) {
+    let secondNumber = parseFloat(calculator.currentInput);
+    let result = operateFunction(
+      calculator.operator,
+      calculator.firstNumber,
+      secondNumber
+    );
+    result = roundResult(result);
+    calculator.currentInput = result.toString();
+    calculator.firstNumber = "";
+    calculator.operator = "";
+    calculator.hasResult = true;
+
+    updateDisplay();
+  }
+}
+
+function roundResult(result) {
+  return Math.round(result * 1e8) / 1e8;
 }
 
 function clearDisplay() {
-  document.querySelector(".display").textContent = 0;
+  clearCalculator();
+  updateDisplay();
 }
 
-const numberButtons = document.querySelectorAll(".btn--number");
-numberButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const numberPressed = button.textContent;
-    console.log(numberPressed);
-    updateDisplay(numberPressed);
-  });
-});
+function clearCalculator() {
+  calculator.currentInput = "";
+  calculator.firstNumber = "";
+  calculator.operator = "";
+  calculator.hasResult = false;
+}
 
-const operatorButtons = document.querySelectorAll(".btn--operator");
-operatorButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const operator = button.textContent.trim(); // Get the text content of the button
-    if (operator === "+") {
-      operationType = "add";
-    } else if (operator === "-") {
-      operationType = "substract";
-    } else if (operator === "/") {
-      operationType = "divide";
-    } else if (operator === "X") {
-      operationType = "multiply";
-    }
-    console.log("Operation:", operationType); // For debugging
-  });
-});
-
-const operate = (operator, a, b) => {
-  if (a && b && operator) {
-    if (operator === "+") {
-      add(a, b);
-    } else if (operator === "-") {
-      substract(a, b);
-    } else if (operator === "*") {
-      multiply(a, b);
-    } else if (operator === "/") {
-      divide(a, b);
-    }
+function operateFunction(operator, a, b) {
+  switch (operator) {
+    case "+":
+      return add(a, b);
+    case "-":
+      return subtract(a, b);
+    case "*":
+      return multiply(a, b);
+    case "/":
+      return divide(a, b);
+    default:
+      return "Invalid operator!";
   }
-};
+}
 
-equalButton.addEventListener("click", () => {
-  result = operate(operation, number1, number2);
-  console.log(result);
+function addDecimal() {
+  if (!calculator.currentInput.includes(".")) {
+    calculator.currentInput += ".";
+    updateDisplay();
+  }
+}
+
+function backspace() {
+  calculator.currentInput = calculator.currentInput.slice(0, -1);
+  updateDisplay();
+}
+
+// Math functions
+function add(a, b) {
+  return a + b;
+}
+
+function subtract(a, b) {
+  return a - b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+function divide(a, b) {
+  if (b === 0) {
+    return "Error: Division by zero!";
+  }
+  return a / b;
+}
+
+// Keyboard
+document.addEventListener("keydown", function (event) {
+  const key = event.key;
+  if (!isNaN(key)) {
+    addToDisplay(parseInt(key));
+  } else if (key === "+" || key === "-" || key === "*" || key === "/") {
+    operation(key);
+  } else if (key === "=" || key === "Enter") {
+    operate();
+  } else if (key === ".") {
+    addDecimal();
+  } else if (key === "Backspace") {
+    backspace();
+  } else if (key === "Escape") {
+    clearDisplay();
+  }
 });
-
-// const calculate = () => {
-//   result = operate(operations[operationType], number1, number2);
-// };
