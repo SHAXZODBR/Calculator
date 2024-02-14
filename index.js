@@ -81,6 +81,22 @@ equalButton.addEventListener("click", () => {
   console.log(result);
 });
 
+function backspace() {
+  calculator.currentInput = calculator.currentInput.slice(0, -1);
+  updateDisplay();
+}
+
+function addDecimal() {
+  if (!calculator.currentInput.includes(".")) {
+    calculator.currentInput += ".";
+    updateDisplay();
+  }
+}
+
+function roundResult(result) {
+  return Math.round(result * 1e8) / 1e8;
+}
+
 // const calculate = () => {
 //   result = operate(operations[operationType], number1, number2);
 // };
