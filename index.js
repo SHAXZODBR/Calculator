@@ -1,6 +1,8 @@
 let operation = "add";
 let result=0;
 const display = document.querySelector('.display');
+const equalButton = document.getElementById('equal');
+//const decimalButton = document.getElementById('decimal');
 
 const sum = (a, b) => a + b;
 const sub = (a, b) => a - b;
@@ -10,38 +12,6 @@ const division = (a, b) => {
   return a / b;
 };
 
-const operate = (operator, a, b) => {
-    if((a && b) && operator) {
-        if(operator === "+"){
-            sum(a,b);
-        }else if(operator === "-"){
-            sub(a,b);
-        }else if (operator === "*"){
-            multiply(a,b);
-        }else if(operator === "/"){
-            division(a, b);
-        }
-    }
-}
-
-
-
-const calculate = () => {
-  switch (operation) {
-    case "add":
-      return operate(add, number1, number2);
-    case "substract":
-      return operate(substract, number1, number2);
-    case "divide":
-      return operate(divide, number1, number2);
-    case "multiply":
-      return operate(multiply, number1, number2);
-    default:
-      return result; 
-  }
-};
-
-// lines 21-42 added by Lucy ; ERASE AFTER YOU TAKE OVER
 const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', () => {
   updateDisplay('');
@@ -61,8 +31,57 @@ const numberButtons = document.querySelectorAll('.btn--number');
 numberButtons.forEach(button => {
   button.addEventListener('click', () => {
     const numberPressed = button.textContent;
+    console.log(numberPressed);
     updateDisplay(numberPressed);
   });
 });
+
+const operatorButtons = document.querySelectorAll('.btn--operator');
+operatorButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const operator = button.textContent.trim(); // Get the text content of the button
+        if (operator === '+') {
+            operation = '+';
+        } else if (operator === '-') {
+            operation = '-';
+        } else if (operator === '/') {
+            operation = '/';
+        } else if (operator === 'X') {
+            operation = '*';
+        }
+        console.log("Operation:", operation); // For debugging
+    });
+});
+
+const operate = (operator, a, b) => {
+    if((a && b) && operator) {
+        if(operator === "+"){
+            sum(a,b);
+        }else if(operator === "-"){
+            sub(a,b);
+        }else if (operator === "*"){
+            multiply(a,b);
+        }else if(operator === "/"){
+            division(a, b);
+        }
+    }
+}
+
+const calculate = () => {
+  switch (operation) {
+    case "add":
+      return operate(add, number1, number2);
+    case "substract":
+      return operate(substract, number1, number2);
+    case "divide":
+      return operate(divide, number1, number2);
+    case "multiply":
+      return operate(multiply, number1, number2);
+    default:
+      return result; 
+  }
+};
+
+
 
 
