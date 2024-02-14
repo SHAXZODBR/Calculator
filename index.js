@@ -2,6 +2,30 @@ let operation = "add";
 let result = 0;
 const display = document.querySelector(".display");
 
+const sum = (a, b) => a + b;
+const sub = (a, b) => a - b;
+const multiply = (a, b) => a * b;
+const division = (a, b) => {
+  if(b === 0) alert("You can't divide by 0");
+  return a / b;
+};
+
+const operate = (operator, a, b) => {
+    if((a && b) && operator) {
+        if(operator === "+"){
+            sum(a,b);
+        }else if(operator === "-"){
+            sub(a,b);
+        }else if (operator === "*"){
+            multiply(a,b);
+        }else if(operator === "/"){
+            division(a, b);
+        }
+    }
+}
+
+
+
 const calculate = () => {
   switch (operation) {
     case "add":
@@ -13,7 +37,7 @@ const calculate = () => {
     case "multiply":
       return operate(multiply, number1, number2);
     default:
-      return result;
+      return result; 
   }
 };
 
