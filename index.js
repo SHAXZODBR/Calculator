@@ -7,7 +7,7 @@ const equalButton = document.getElementById("equal");
 //const decimalButton = document.getElementById('decimal');
 
 const add = (a, b) => a + b;
-const substract = (a, b) => a - b;
+const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => {
   if (b === 0) alert("You can't divide by 0");
@@ -16,7 +16,7 @@ const divide = (a, b) => {
 
 const allOperations = {
   add: add,
-  substract: substract,
+  subtract: subtract,
   multiply: multiply,
   divide: divide,
 };
@@ -52,7 +52,7 @@ operatorButtons.forEach((button) => {
     if (operator === "+") {
       operationType = "add";
     } else if (operator === "-") {
-      operationType = "substract";
+      operationType = "subtract";
     } else if (operator === "/") {
       operationType = "divide";
     } else if (operator === "X") {
