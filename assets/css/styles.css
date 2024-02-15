@@ -81,4 +81,8 @@ body {
   .button-list {
     gap: calc((16 / 600) * 100vw);
   }
+
+  .result {
+    font-size: 2.25rem;
+  }
 }

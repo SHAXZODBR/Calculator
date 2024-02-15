@@ -1,7 +1,8 @@
-let operationType = "add";
 let result = 0;
 let number1 = "";
 let number2 = "";
+let operation = "add";
+let isFloat = false;
 const display = document.querySelector(".display");
 const equalButton = document.getElementById("equal");
 //const decimalButton = document.getElementById('decimal');
@@ -96,6 +97,15 @@ function addDecimal() {
 function roundResult(result) {
   return Math.round(result * 1e8) / 1e8;
 }
+const resetAllParameters = () => {
+  number1 = "";
+  number2 = "";
+  result = 0;
+  isFloat = false;
+  operation = "add";
+  resultDisplay.textContent = result.toString();
+  clearBtn.textContent = "AC";
+};
 
 // const calculate = () => {
 //   result = operate(operations[operationType], number1, number2);
