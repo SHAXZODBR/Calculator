@@ -94,6 +94,14 @@ function addDecimal() {
 }
 
 function roundResult(result) {
+  const maxValue = 999999999;
+  const minValue = -999999999;
+  if (result > maxValue) {
+    return maxValue;
+  }
+  if (result < minValue) {
+    return minValue;
+  }
   return Math.round(result * 1e8) / 1e8;
 }
 
