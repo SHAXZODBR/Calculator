@@ -1,13 +1,14 @@
-let operationType = "add";
 let result = 0;
 let number1 = "";
 let number2 = "";
+let operation = "add";
+let isFloat = false;
 const display = document.querySelector(".display");
 const equalButton = document.getElementById("equal");
 //const decimalButton = document.getElementById('decimal');
 
 const add = (a, b) => a + b;
-const substract = (a, b) => a - b;
+const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => {
   if (b === 0) alert("You can't divide by 0");
@@ -16,7 +17,7 @@ const divide = (a, b) => {
 
 const allOperations = {
   add: add,
-  substract: substract,
+  subtract: subtract,
   multiply: multiply,
   divide: divide,
 };
@@ -52,7 +53,7 @@ operatorButtons.forEach((button) => {
     if (operator === "+") {
       operationType = "add";
     } else if (operator === "-") {
-      operationType = "substract";
+      operationType = "subtract";
     } else if (operator === "/") {
       operationType = "divide";
     } else if (operator === "X") {
@@ -104,6 +105,15 @@ function roundResult(result) {
   }
   return Math.round(result * 1e8) / 1e8;
 }
+const resetAllParameters = () => {
+  number1 = "";
+  number2 = "";
+  result = 0;
+  isFloat = false;
+  operation = "add";
+  resultDisplay.textContent = result.toString();
+  clearBtn.textContent = "AC";
+};
 
 // const calculate = () => {
 //   result = operate(operations[operationType], number1, number2);
