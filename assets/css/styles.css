@@ -24,7 +24,7 @@ body {
   /* margin: 0 auto; */
 }
 
-.result {
+.display {
   height: 100px;
   background-color: #ececec;
   display: flex;
