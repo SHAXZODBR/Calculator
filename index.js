@@ -1,7 +1,8 @@
-let operationType = "add";
 let result = 0;
 let number1 = "";
 let number2 = "";
+let operation = "add";
+let isFloat = false;
 const display = document.querySelector(".display");
 const equalButton = document.getElementById("equal");
 //const decimalButton = document.getElementById('decimal');
@@ -80,6 +81,16 @@ equalButton.addEventListener("click", () => {
   result = operate(operation, number1, number2);
   console.log(result);
 });
+
+const resetAllParameters = () => {
+  number1 = "";
+  number2 = "";
+  result = 0;
+  isFloat = false;
+  operation = "add";
+  resultDisplay.textContent = result.toString();
+  clearBtn.textContent = "AC";
+};
 
 // const calculate = () => {
 //   result = operate(operations[operationType], number1, number2);
