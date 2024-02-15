@@ -82,7 +82,7 @@ body {
     gap: calc((16 / 600) * 100vw);
   }
 
-  .result {
+  .display {
     font-size: 2.25rem;
   }
 }
