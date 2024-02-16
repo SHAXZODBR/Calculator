@@ -1,5 +1,5 @@
 ![Profile Banner](https://github.com/SHAXZODBR/Calculator/blob/main/Simple_JavaScript_Calculator.png)
-<h1 align="center">Calculator</h1>
+
 <h3 align="center">Preview: https://shaxzodbr.github.io/Calculator/ </h3>
 
 <h4>We used:</h4>
