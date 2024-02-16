@@ -24,7 +24,7 @@ const operate = (operator, a, b) => operator(+a, +b);
 
 const allOperators = {
   "+": add,
-  "=": subtract,
+  "-": subtract,
   "*": multiply,
   "/": divide,
 };
