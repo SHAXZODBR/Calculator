@@ -1,10 +1,12 @@
 let result = 0;
 let number1 = "";
 let number2 = "";
-let operation = "add";
+let operationType = "+";
 let isFloat = false;
+let isFinalResult = false;
 const display = document.querySelector(".display");
 const equalButton = document.getElementById("equal");
+const backspaceButton = document.getElementById("backspace");
 //const decimalButton = document.getElementById('decimal');
 
 const add = (a, b) => a + b;
@@ -17,17 +19,24 @@ const divide = (a, b) => {
 
 const operate = (operator, a, b) => operator(+a, +b);
 
-const allOperations = {
-  add: add,
-  subtract: subtract,
-  multiply: multiply,
-  divide: divide,
+const allOperators = {
+  "+": add,
+  "=": subtract,
+  "*": multiply,
+  "/": divide,
 };
 
 const clearButton = document.getElementById("clear");
 clearButton.addEventListener("click", () => {
   updateDisplay("");
 });
+
+const handleEqualClick = () => {
+  result = roundResult(operate(allOperators[operationType], number1, number2));
+  display.textContent = result.toString().substring(0, 10);
+  number1 = result.toString().substring(0, 10);
+  isFinalResult = true;
+};
 
 function updateDisplay(number) {
   let displayContent = document.querySelector(".display").textContent;
@@ -41,38 +50,59 @@ function clearDisplay() {
 }
 
 const numberButtons = document.querySelectorAll(".btn--number");
+
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const numberPressed = button.textContent;
     if (numberPressed === ".") {
-      console.log("hello");
-      number2 = addDecimal(number2);
-      updateDisplay(numberPressed);
-      return;
+      if (isFloat) return;
+      else {
+        isFloat = true;
+      }
     }
-    console.log("lets see");
+    clearButton.textContent = "C";
     number2 += numberPressed;
-    console.log(numberPressed);
-    updateDisplay(numberPressed);
+    number2 = number2.length <= 8 ? number2 : removeLastNumber(number2);
+    display.textContent = number2;
   });
 });
 
 const operatorButtons = document.querySelectorAll(".btn--operator");
+
 operatorButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    const operator = button.textContent.trim(); // Get the text content of the button
-    if (operator === "+") {
-      operationType = "add";
-    } else if (operator === "-") {
-      operationType = "subtract";
-    } else if (operator === "/") {
-      operationType = "divide";
-    } else if (operator === "X") {
-      operationType = "multiply";
-    }
+  button.addEventListener("click", (e) => {
+    // const operator = button.textContent.trim(); // Get the text content of the button
+    const operator = e.target.dataset.operator;
+    const operationToAssign = operator;
+    handleOperatorClick(operationToAssign);
+
     console.log("Operation:", operationType); // For debugging
   });
 });
+
+const handleOperatorClick = (operation) => {
+  if (isFinalResult) {
+    isFinalResult = false;
+    operationType = operation;
+    number2 = "";
+    return;
+  }
+
+  if (number2 !== "") {
+    isFloat = false;
+    result = roundResult(
+      operate(allOperators[operationType], number1, number2)
+    );
+    operationType = operation;
+    number1 = result.toString().substring(0, 10);
+    display.textContent = result.toString().substring(0, 10);
+    number2 = "";
+  }
+
+  if (number2 === "") {
+    operationType = operation;
+  }
+};
 
 // const operate = (operator, a, b) => {
 //   if (a && b && operator) {
@@ -88,21 +118,37 @@ operatorButtons.forEach((button) => {
 //   }
 // };
 
-equalButton.addEventListener("click", () => {
-  result = operate(operations[operationType], number1, number2);
-  console.log(result);
+// const setToFloat = (input) => {
+//   if (numberPressed === ".") {
+//     if (isFloat) return;
+//     else {
+//       isFloat = true;
+//     }
+//   }
+// };
+
+backspaceButton.addEventListener("click", () => {
+  number2 = backspace(number2);
 });
 
-function backspace() {
-  calculator.currentInput = calculator.currentInput.slice(0, -1);
-  updateDisplay();
+equalButton.addEventListener("click", () => {
+  // result = roundResult(operate(allOperators[operationType], number1, number2));
+  // display.textContent = result.toString().substring(0, 10);
+  // number1 = result.toString().substring(0, 10);
+  // isFinalResult = true;
+  // console.log(result);
+  handleEqualClick();
+});
+
+function backspace(number) {
+  number = number.slice(0, -1);
+  display.textContent = number;
+  return number;
 }
 
 function addDecimal(numberString) {
   if (!numberString.includes(".")) {
     numberString += ".";
-    console.log("pouet");
-    console.log(numberString);
     return numberString;
   }
   return numberString;
@@ -125,6 +171,7 @@ const resetAllParameters = () => {
   number2 = "";
   result = 0;
   isFloat = false;
+  isFinalResult = false;
   operation = "add";
   resultDisplay.textContent = result.toString();
   clearBtn.textContent = "AC";
@@ -139,13 +186,13 @@ document.addEventListener("keydown", function (event) {
   if (!isNaN(key)) {
     addToDisplay(parseInt(key));
   } else if (key === "+" || key === "-" || key === "*" || key === "/") {
-    operation(key);
+    handleOperatorClick(key);
   } else if (key === "=" || key === "Enter") {
-    operate();
+    handleEqualClick();
   } else if (key === ".") {
     addDecimal();
   } else if (key === "Backspace") {
-    backspace();
+    number2 = backspace(number2);
   } else if (key === "Escape") {
     clearDisplay();
   }
