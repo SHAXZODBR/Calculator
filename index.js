@@ -15,6 +15,8 @@ const divide = (a, b) => {
   return a / b;
 };
 
+const operate = (operator, a, b) => operator(a, b);
+
 const allOperations = {
   add: add,
   subtract: subtract,
@@ -29,7 +31,8 @@ clearButton.addEventListener("click", () => {
 
 function updateDisplay(number) {
   let displayContent = document.querySelector(".display").textContent;
-  let updatedContent = Number(displayContent + number);
+  // let updatedContent = Number(displayContent + number);
+  let updatedContent = displayContent + number.toString();
   document.querySelector(".display").textContent = updatedContent;
 }
 
@@ -63,22 +66,22 @@ operatorButtons.forEach((button) => {
   });
 });
 
-const operate = (operator, a, b) => {
-  if (a && b && operator) {
-    if (operator === "+") {
-      add(a, b);
-    } else if (operator === "-") {
-      substract(a, b);
-    } else if (operator === "*") {
-      multiply(a, b);
-    } else if (operator === "/") {
-      divide(a, b);
-    }
-  }
-};
+// const operate = (operator, a, b) => {
+//   if (a && b && operator) {
+//     if (operator === "+") {
+//       add(a, b);
+//     } else if (operator === "-") {
+//       substract(a, b);
+//     } else if (operator === "*") {
+//       multiply(a, b);
+//     } else if (operator === "/") {
+//       divide(a, b);
+//     }
+//   }
+// };
 
 equalButton.addEventListener("click", () => {
-  result = operate(operation, number1, number2);
+  result = operate(operations[operationType], number1, number2);
   console.log(result);
 });
 
@@ -105,6 +108,7 @@ function roundResult(result) {
   }
   return Math.round(result * 1e8) / 1e8;
 }
+
 const resetAllParameters = () => {
   number1 = "";
   number2 = "";
