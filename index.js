@@ -1,3 +1,5 @@
+const test = "test";
+
 let result = 0;
 let number1 = "";
 let number2 = "";
