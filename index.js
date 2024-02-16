@@ -1,11 +1,15 @@
 let result = 0;
 let number1 = "";
 let number2 = "";
-let operation = "add";
+let numArray1 = [];
+let numArray2 = [];
+let step = 0;
+let operation = "";
 let isFloat = false;
 const display = document.querySelector(".display");
 const equalButton = document.getElementById("equal");
-//const decimalButton = document.getElementById('decimal');
+const decimalButton = document.getElementById('decimal');
+const deleteOneNumber = document.getElementById('backspace');
 
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
@@ -24,25 +28,30 @@ const allOperations = {
 
 const clearButton = document.getElementById("clear");
 clearButton.addEventListener("click", () => {
-  updateDisplay("");
+  clearDisplay("");
 });
 
-function updateDisplay(number) {
-  let displayContent = document.querySelector(".display").textContent;
-  let updatedContent = Number(displayContent + number);
-  document.querySelector(".display").textContent = updatedContent;
-}
 
 function clearDisplay() {
-  document.querySelector(".display").textContent = 0;
+  document.querySelector(".display").textContent = "";
 }
 
 const numberButtons = document.querySelectorAll(".btn--number");
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    const numberPressed = button.textContent;
-    console.log(numberPressed);
-    updateDisplay(numberPressed);
+    const digit = button.textContent;    
+      if (step === 0 || step === 1) {
+        numArray1.push(digit)
+        step= 1;
+        number1= Number(numArray1.join(""));
+        document.querySelector(".display").textContent = number1;
+        console.log(number1)        
+      } else if (step === 2) {
+        numArray2.push(digit);
+        number2= Number(numArray2.join(""));
+        document.querySelector(".display").textContent = number2;
+        console.log(number2);
+      }  
   });
 });
 
@@ -50,16 +59,18 @@ const operatorButtons = document.querySelectorAll(".btn--operator");
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const operator = button.textContent.trim(); // Get the text content of the button
+    step = 2;
     if (operator === "+") {
-      operationType = "add";
+      operation = "add";
     } else if (operator === "-") {
-      operationType = "subtract";
+      operation = "subtract";
     } else if (operator === "/") {
-      operationType = "divide";
+      operation = "divide";
     } else if (operator === "X") {
-      operationType = "multiply";
+      operation = "multiply";
     }
-    console.log("Operation:", operationType); // For debugging
+    document.querySelector(".display").textContent = operator;
+    console.log("Operation:", operator); // For debugging
   });
 });
 
@@ -68,7 +79,7 @@ const operate = (operator, a, b) => {
     if (operator === "+") {
       add(a, b);
     } else if (operator === "-") {
-      substract(a, b);
+      subtract(a, b);
     } else if (operator === "*") {
       multiply(a, b);
     } else if (operator === "/") {
