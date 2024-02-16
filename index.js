@@ -15,7 +15,7 @@ const divide = (a, b) => {
   return a / b;
 };
 
-const operate = (operator, a, b) => operator(a, b);
+const operate = (operator, a, b) => operator(+a, +b);
 
 const allOperations = {
   add: add,
@@ -44,6 +44,7 @@ const numberButtons = document.querySelectorAll(".btn--number");
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const numberPressed = button.textContent;
+    number2 += numberPressed;
     console.log(numberPressed);
     updateDisplay(numberPressed);
   });
@@ -122,3 +123,20 @@ const resetAllParameters = () => {
 // const calculate = () => {
 //   result = operate(operations[operationType], number1, number2);
 // };
+// Keyboard
+document.addEventListener("keydown", function (event) {
+  const key = event.key;
+  if (!isNaN(key)) {
+    addToDisplay(parseInt(key));
+  } else if (key === "+" || key === "-" || key === "*" || key === "/") {
+    operation(key);
+  } else if (key === "=" || key === "Enter") {
+    operate();
+  } else if (key === ".") {
+    addDecimal();
+  } else if (key === "Backspace") {
+    backspace();
+  } else if (key === "Escape") {
+    clearDisplay();
+  }
+});
