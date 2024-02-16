@@ -44,6 +44,13 @@ const numberButtons = document.querySelectorAll(".btn--number");
 numberButtons.forEach((button) => {
   button.addEventListener("click", () => {
     const numberPressed = button.textContent;
+    if (numberPressed === ".") {
+      console.log("hello");
+      number2 = addDecimal(number2);
+      updateDisplay(numberPressed);
+      return;
+    }
+    console.log("lets see");
     number2 += numberPressed;
     console.log(numberPressed);
     updateDisplay(numberPressed);
@@ -91,11 +98,14 @@ function backspace() {
   updateDisplay();
 }
 
-function addDecimal() {
-  if (!calculator.currentInput.includes(".")) {
-    calculator.currentInput += ".";
-    updateDisplay();
+function addDecimal(numberString) {
+  if (!numberString.includes(".")) {
+    numberString += ".";
+    console.log("pouet");
+    console.log(numberString);
+    return numberString;
   }
+  return numberString;
 }
 
 function roundResult(result) {
