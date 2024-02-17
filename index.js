@@ -70,21 +70,6 @@ const handleOperatorClick = (operation) => {
     operationType = operation;
   }
 
-  if (number2 !== "") {
-    isFloat = false;
-    result = roundResult(
-      operate(allOperators[operationType], number1, number2)
-    );
-    if (isNaN(result)) {
-      resetAllParameters();
-    } else {
-      operationType = operation;
-      number1 = result.toString().substring(0, 10);
-      display.textContent = result.toString().substring(0, 10);
-      number2 = "";
-    }
-  }
-
   operatorButtons.forEach((btn) => {
     btn.classList.remove("selected");
 
@@ -92,6 +77,30 @@ const handleOperatorClick = (operation) => {
       btn.classList.add("selected");
     }
   });
+
+  if (number2 !== "") {
+    isFloat = false;
+    result = roundResult(
+      operate(allOperators[operationType], number1, number2)
+    );
+
+    if (isNaN(result)) {
+      resetAllParameters();
+    } else {
+      operationType = operation;
+      number1 = result.toString().substring(0, 10);
+      display.textContent = result.toString().substring(0, 10);
+      number2 = "";
+
+      operatorButtons.forEach((btn) => {
+        btn.classList.remove("selected");
+
+        if (btn.dataset.operator === operationType) {
+          btn.classList.add("selected");
+        }
+      });
+    }
+  }
 };
 
 const handleMaxInputLength = (numberString) => {
