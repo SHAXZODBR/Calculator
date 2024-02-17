@@ -9,8 +9,6 @@ body {
   align-items: center;
   justify-content: space-between;
   flex-direction: column;
-  /* background-color: #ffe8ec; */
-  /* background: linear-gradient(135deg, #b6faff 30%, #f9b3f7); */
   background: linear-gradient(135deg, #1fe0bc 30%, #fff);
 }
 
@@ -38,6 +36,27 @@ body {
   margin-bottom: 2rem;
 }
 
+.display-wrapper {
+  position: relative;
+}
+
+.error {
+  position: absolute;
+  background-color: #8a8c92;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 3px;
+  padding: 2px 5px;
+  bottom: 5px;
+  right: 1rem;
+  opacity: 0;
+}
+
+.error.show {
+  opacity: 1;
+}
+
 .btn {
   width: 120px;
   height: 80px;
@@ -60,6 +79,10 @@ body {
 .btn--clear,
 .btn--backspace {
   background-color: #ffb500;
+}
+
+.btn--operator.selected {
+  opacity: 0.75;
 }
 
 .button-list {

@@ -11,12 +11,16 @@ const backspaceButton = document.getElementById("backspace");
 const clearButton = document.getElementById("clear");
 const numberButtons = document.querySelectorAll(".btn--number");
 const operatorButtons = document.querySelectorAll(".btn--operator");
+const errorDisplay = document.querySelector(".error");
 
 const add = (a, b) => a + b;
 const subtract = (a, b) => a - b;
 const multiply = (a, b) => a * b;
 const divide = (a, b) => {
-  if (b === 0) alert("You can't divide by 0");
+  if (b === 0) {
+    alert("You can't divide by 0");
+    return 0;
+  }
   return a / b;
 };
 
@@ -28,27 +32,6 @@ const allOperators = {
   "*": multiply,
   "/": divide,
 };
-
-// const operate = (operator, a, b) => {
-//   if (a && b && operator) {
-//     if (operator === "+") {
-//       add(a, b);
-//     } else if (operator === "-") {
-//       substract(a, b);
-//     } else if (operator === "*") {
-//       multiply(a, b);
-//     } else if (operator === "/") {
-//       divide(a, b);
-//     }
-//   }
-// };
-
-// function updateDisplay(number) {
-//   let displayContent = document.querySelector(".display").textContent;
-//   // let updatedContent = Number(displayContent + number);
-//   let updatedContent = displayContent + number.toString();
-//   document.querySelector(".display").textContent = updatedContent;
-// }
 
 const handleNumberInput = (input) => {
   if (number2 === "0" && input !== ".") {
@@ -62,16 +45,23 @@ const handleNumberInput = (input) => {
   }
   clearButton.textContent = "C";
   number2 += input;
-  number2 = number2.length <= 8 ? number2 : handleBackspace(number2);
+  number2 = number2.length <= 9 ? number2 : handleMaxInputLength(number2);
   display.textContent = number2;
 };
 
 const handleOperatorClick = (operation) => {
-  console.log(operation);
+  errorDisplay.classList.remove("show");
   if (isFinalResult) {
     isFinalResult = false;
     operationType = operation;
     number2 = "";
+    operatorButtons.forEach((btn) => {
+      btn.classList.remove("selected");
+
+      if (btn.dataset.operator === operationType) {
+        btn.classList.add("selected");
+      }
+    });
     return;
   }
 
@@ -89,6 +79,19 @@ const handleOperatorClick = (operation) => {
   if (number2 === "") {
     operationType = operation;
   }
+
+  operatorButtons.forEach((btn) => {
+    btn.classList.remove("selected");
+
+    if (btn.dataset.operator === operationType) {
+      btn.classList.add("selected");
+    }
+  });
+};
+
+const handleMaxInputLength = (numberString) => {
+  alert("Ooops! You exceeded the maximum number of digits(9).");
+  return handleBackspace(numberString);
 };
 
 function handleBackspace(numberString) {
@@ -114,9 +117,11 @@ function roundResult(result) {
   const maxValue = 999999999;
   const minValue = -999999999;
   if (result > maxValue) {
+    errorDisplay.classList.add("show");
     return maxValue;
   }
   if (result < minValue) {
+    errorDisplay.classList.add("show");
     return minValue;
   }
   return Math.round(result * 1e8) / 1e8;
@@ -131,6 +136,10 @@ const resetAllParameters = () => {
   operationType = "+";
   display.textContent = result.toString();
   clearButton.textContent = "AC";
+  errorDisplay.classList.remove("show");
+  operatorButtons.forEach((btn) => {
+    btn.classList.remove("selected");
+  });
 };
 
 const handleEqualClick = () => {
@@ -144,6 +153,7 @@ function clearDisplay() {
   number2 = "";
   display.textContent = "0";
   clearButton.textContent = "AC";
+  errorDisplay.classList.remove("show");
 }
 
 numberButtons.forEach((button) => {
@@ -155,28 +165,8 @@ numberButtons.forEach((button) => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", (e) => {
-    const operator = button.textContent.trim(); // Get the text content of the button
-    let operationToAssign;
-
-    // if (operator === "+") {
-    //   operationToAssign = "+";
-    // } else if (operator === "-") {
-    //   operationToAssign = "-";
-    // } else if (operator === "/") {
-    //   operationToAssign = "/";
-    // } else if (operator === "X") {
-    //   operationToAssign = "*";
-    // }
-    // OR
-    if (operator === "X") operationToAssign = "*";
-    else operationToAssign = operator;
-    console.log(operator);
-
-    // const operator = e.target.dataset.operator;
-    // const operationToAssign = operator;
-    handleOperatorClick(operationToAssign);
-
-    console.log("Operation:", operationType); // For debugging
+    const operator = e.target.dataset.operator;
+    handleOperatorClick(operator);
   });
 });
 
@@ -196,7 +186,6 @@ backspaceButton.addEventListener("click", () => {
   number2 = handleBackspace(number2);
 });
 
-// Keyboard
 document.addEventListener("keydown", function (event) {
   const key = event.key;
   if (!isNaN(key)) {
