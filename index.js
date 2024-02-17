@@ -143,15 +143,10 @@ const resetAllParameters = () => {
 };
 
 const handleEqualClick = () => {
-  if (number2 !== "") {
-    result = roundResult(
-      operate(allOperators[operationType], number1, number2)
-    );
-    display.textContent = result.toString().substring(0, 10);
-    number1 = result.toString().substring(0, 10);
-    number2 = "";
-    isFinalResult = true;
-  }
+  result = roundResult(operate(allOperators[operationType], number1, number2));
+  display.textContent = result.toString().substring(0, 10);
+  number1 = result.toString().substring(0, 10);
+  isFinalResult = true;
 };
 
 function clearDisplay() {
