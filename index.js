@@ -19,9 +19,10 @@ const multiply = (a, b) => a * b;
 const divide = (a, b) => {
   if (b === 0) {
     alert("You can't divide by 0");
-    return 0;
+    return;
+  } else {
+    return a / b;
   }
-  return a / b;
 };
 
 const operate = (operator, a, b) => operator(+a, +b);
@@ -65,19 +66,23 @@ const handleOperatorClick = (operation) => {
     return;
   }
 
+  if (number2 === "") {
+    operationType = operation;
+  }
+
   if (number2 !== "") {
     isFloat = false;
     result = roundResult(
       operate(allOperators[operationType], number1, number2)
     );
-    operationType = operation;
-    number1 = result.toString().substring(0, 10);
-    display.textContent = result.toString().substring(0, 10);
-    number2 = "";
-  }
-
-  if (number2 === "") {
-    operationType = operation;
+    if (isNaN(result)) {
+      resetAllParameters();
+    } else {
+      operationType = operation;
+      number1 = result.toString().substring(0, 10);
+      display.textContent = result.toString().substring(0, 10);
+      number2 = "";
+    }
   }
 
   operatorButtons.forEach((btn) => {
@@ -144,9 +149,14 @@ const resetAllParameters = () => {
 
 const handleEqualClick = () => {
   result = roundResult(operate(allOperators[operationType], number1, number2));
-  display.textContent = result.toString().substring(0, 10);
-  number1 = result.toString().substring(0, 10);
-  isFinalResult = true;
+
+  if (isNaN(result)) {
+    resetAllParameters();
+  } else {
+    display.textContent = result.toString().substring(0, 10);
+    number1 = result.toString().substring(0, 10);
+    isFinalResult = true;
+  }
 };
 
 function clearDisplay() {
